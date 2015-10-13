@@ -11,6 +11,72 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
 
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<?PHP
+//Mack's Distance calculator
+function calcDist($x1, $y1, $x2, $y2){
+ $dist = sqrt(pow(($x2 - $x1), 2) + pow(($y2 - $y1), 2));
+ return $dist;
+};
+//gets the coordinates from the URL
+$cx = $_GET['cx'];
+$cy = $_GET['cy'];
+//gets the bus variable, I use this later to determine if you want to show bus routes or GreenLine.
+$bus = $_GET['bus'];
+
+
+
+//sets some variabls depending on bus or greenline
+//this is creating the url eg. http://svc.metrotransit.org/nextrip/87/1/RAST?format=json
+if ($bus == "True"){
+$direction1 = "North";
+$direction2 = "South";
+$routeNum1 = "/87/4/";
+$routeNum2 = "/87/1/";
+$busGET = '+"&bus=True"';
+$modeIcon = "ion-android-bus";
+}else{
+$modeIcon = "ion-android-subway";
+$direction1 = "East";
+$direction2 = "West";
+$routeNum1 = "/902/2/";
+$routeNum2 = "/902/3/";
+};
+
+
+
+//checks if there are coordinates set
+if(isset($_GET['cx']) == false){
+	// if coordinates are not set it will use javascript/HTML 5 to find the coordinates and redirect the browser with them in the query string
+  echo '<script>
+    function getLocation() {
+      if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition);
+		  
+      } else {
+          x.innerHTML = "Geolocation is not supported by this browser.";
+      }
+    }
+    function showPosition(position) {
+      window.location.href = "http://narwhy.pw/metro/index.php?cx="+position.coords.latitude+"&cy="+ position.coords.longitude'.$busGET.';
+    }
+	getLocation();
+	</script>
+	
+	waiting for geolocation
+	
+	';
+	
+	//this line stops the rest of the page from loading if there is not a location specified in the url
+	//this will stop the page from showing the wrong station/info while waiting to get the geolocation.
+	exit;
+};
+
+
+?>
+
 <style>
 #modeIcon{
   font-size:32px;
@@ -41,60 +107,8 @@ h2.direction{
 	margin-bottom:10px
 }
 </style>
-<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <?PHP
-//Mack's Distance calculator
-function calcDist($x1, $y1, $x2, $y2){
- $dist = sqrt(pow(($x2 - $x1), 2) + pow(($y2 - $y1), 2));
- return $dist;
-};
-//gets the coordinates from the URL
-$cx = $_GET['cx'];
-$cy = $_GET['cy'];
-//gets the bus variable, I use this later to determine if you want to show bus routes or GreenLine.
-$bus = $_GET['bus'];
-
-
-
-//sets some variabls depending on bus or greenline
-//this is creating the url eg. http://svc.metrotransit.org/nextrip/87/1/RAST?format=json
-if ($bus == "True"){
-$direction1 = "North";
-$direction2 = "South";
-$routeNum1 = "/87/4/";
-$routeNum2 = "/87/1/";
-$busGET = "&bus=True";
-$modeIcon = "ion-android-bus";
-}else{
-$modeIcon = "ion-android-subway";
-$direction1 = "East";
-$direction2 = "West";
-$routeNum1 = "/902/2/";
-$routeNum2 = "/902/3/";
-};
-
-
-
-//checks if there are coordinates set
-if(isset($_GET['cx']) == false){
-	// if coordinates are not set it will use javascript/HTML 5 to find the coordinates and redirect the browser with them in the query string
-  echo '<script>
-    function getLocation() {
-      if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(showPosition);
-		  
-      } else {
-          x.innerHTML = "Geolocation is not supported by this browser.";
-      }
-    }
-    function showPosition(position) {
-      window.location.href = "http://narwhy.pw/metro/index.php?cx="+position.coords.latitude+"&cy="+ position.coords.longitude'.$busGET.';
-    }
-	getLocation();
-	</script>';
-};
-
 //loads the CSV file depending if Bus or GreenLine
 if ($bus == "True"){
 $csv = array_map('str_getcsv', file('87Stations.csv'));	
