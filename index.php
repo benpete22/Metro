@@ -162,16 +162,6 @@ function getrequest($url){
 	//returns the json encoded response
 	return json_decode($resp);
 };
-	
-
-
-
-
-
-
-	
-	
-	
 ?>	
 
 	
@@ -179,6 +169,7 @@ function getrequest($url){
 	
 		//javascript that checks the location and refreshes the window every 30 seconds	if the url does not have ?reload=False
 	function getLocation() {
+		//if navigator.geolocation is available then run this
       if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(showPosition); 
       } else {
@@ -190,25 +181,19 @@ function getrequest($url){
       window.location.href = "http://narwhy.pw/metro/index.php?cx="+position.coords.latitude+"&cy="+ position.coords.longitude<?PHP echo $busGET.$reloadGET; ?>;
     }
 		
+	// checks to make sure that $reload is not set to false and then after waiting 30 seconds calls the getLocation() fucntion
 	if (<?php echo $reload; ?> != "False"){ setTimeout("getLocation();", 30000)};
 	
-		
+	//script that will toggle between bus and train mode. 
 	function changeMode(){	
 		if (<?PHP echo $busText; ?> == "True"){
 			window.location.href = "http://narwhy.pw/metro/index.php?bus=False<?PHP echo $reloadGET; ?>";
 		}else{
 			window.location.href = "http://narwhy.pw/metro/index.php?bus=True<?PHP echo $reloadGET; ?>";
 		}			
-	}
-		
-		
-	
+	}	
 	</script>
 	
-
-	
-
-    	
 	<br>
 	<div class=container-fluid>
 		<div id=main class="panel panel-default">
@@ -225,8 +210,14 @@ function getrequest($url){
 				$requrl ='http://svc.metrotransit.org/nextrip'.$routeNum1.$stationID.'?format=json';
 				//requests the URL
 				$output = getrequest($requrl); ?>
-				<h4 class="direction"><div class='time panel-footer'> <?PHP echo $output[0]->DepartureText ?> </div>
-				<div class='time panel-footer bottomfoot'> <?PHP echo $output[1]->DepartureText ?></div></h4>
+				<h4 class="direction">
+					<div class='time panel-footer' onclick='location.href="https://www.google.com/maps?q=<?PHP echo $output[0]->VehicleLatitude; ?>,<?PHP echo $output[0]->VehicleLongitude; ?> "'>
+						<?PHP echo $output[0]->DepartureText ?>
+					</div>
+					<div class='time panel-footer bottomfoot' onclick='location.href="https://www.google.com/maps?q=<?PHP echo $output[1]->VehicleLatitude; ?>,<?PHP echo $output[1]->VehicleLongitude; ?> "'>
+						<?PHP echo $output[1]->DepartureText ?>
+					</div>
+				</h4>
 			</div> 
 			<div class='panel-body direction'><h3  class="direction"> <?PHP echo $direction2; ?></h3>
 				<?PHP
@@ -234,8 +225,14 @@ function getrequest($url){
 				$requrl ='http://svc.metrotransit.org/nextrip'.$routeNum2.$stationID.'?format=json';
 				//requests the URL
 				$output = getrequest($requrl); ?>
-				<h4 class="direction"><div class='time panel-footer'><?PHP echo $output[0]->DepartureText ?></div>
-				<div class='time panel-footer bottomfoot'><?PHP echo $output[1]->DepartureText ?></div></h4>
+				<h4 class="direction">
+					<div class='time panel-footer' onclick='location.href="https://www.google.com/maps?q=<?PHP echo $output[0]->VehicleLatitude; ?>,<?PHP echo $output[0]->VehicleLongitude; ?> "'>
+						<?PHP echo $output[0]->DepartureText ?>
+					</div>
+					<div class='time panel-footer bottomfoot' onclick='location.href="https://www.google.com/maps?q=<?PHP echo $output[1]->VehicleLatitude; ?>,<?PHP echo $output[1]->VehicleLongitude; ?> "'>
+						<?PHP echo $output[1]->DepartureText ?>
+					</div>
+				</h4>
 				
 			</div>
 		</div>	
