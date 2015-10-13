@@ -26,7 +26,14 @@ $cy = $_GET['cy'];
 //gets the bus variable, I use this later to determine if you want to show bus routes or GreenLine.
 $bus = $_GET['bus'];
 
+//gets the reload variable, I use this to determine whether or not to auto refresh the page.
 
+$reload = $_GET['reload'];
+if ($reload == "False"){
+$reloadGET = '+"&reload=false"';
+}else{
+$reload = '"True"';
+};
 
 //sets some variabls depending on bus or greenline
 //this is creating the url eg. http://svc.metrotransit.org/nextrip/87/1/RAST?format=json
@@ -60,7 +67,7 @@ if(isset($_GET['cx']) == false){
       }
     }
     function showPosition(position) {
-      window.location.href = "http://narwhy.pw/metro/index.php?cx="+position.coords.latitude+"&cy="+ position.coords.longitude'.$busGET.';
+      window.location.href = "http://narwhy.pw/metro/index.php?cx="+position.coords.latitude+"&cy="+ position.coords.longitude'.$busGET.$reloadGET.';
     }
 	getLocation();
 	</script>
@@ -167,7 +174,10 @@ function getrequest($url){
 
 	
 	<script>
+	
+		
 	//javascript that checks the location and refreshes the window every 30 seconds	
+	
 	function getLocation() {
       if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(showPosition);
@@ -177,14 +187,18 @@ function getrequest($url){
       }
     }
     function showPosition(position) {
-      window.location.href = "http://narwhy.pw/metro/index.php?cx="+position.coords.latitude+"&cy="+ position.coords.longitude<?PHP echo $busGET; ?>;
+      window.location.href = "http://narwhy.pw/metro/index.php?cx="+position.coords.latitude+"&cy="+ position.coords.longitude<?PHP echo $busGET.$reloadGET; ?>;
     }
-	setTimeout("getLocation();", 30000);
+	if (<?php echo $reload; ?> != "False"){ setTimeout("getLocation();", 30000)};
+	function changeMode();	
+		
+	
 	</script>
 	
 
 	
 
+    	
 	<br>
 	<div class=container-fluid>
 		<div id=main class="panel panel-default">
@@ -193,7 +207,7 @@ function getrequest($url){
 				<?PHP echo $stationName; ?>
 				
 				</h2>
-				<span id="modeIcon" class=" <?PHP echo $modeIcon; ?> "></span>
+				<span id="modeIcon" class=" <?PHP echo $modeIcon; ?> " onclick="changeMode()"></span>
 			</div>
 			<div class='panel-body direction'><h3  class="direction"> <?PHP echo $direction1; ?> </h3>
 				<?PHP
