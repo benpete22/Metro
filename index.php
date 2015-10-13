@@ -2,6 +2,7 @@
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" media="screen" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
 
 <!-- Optional theme -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
@@ -11,8 +12,12 @@
 
 
 <style>
+#modeIcon{
+  font-size:32px;
+}
 #main {
-  width: 200px;
+  width: 75%;
+  max-width: 250px;
   margin: auto;
   text-align: center;
 }
@@ -50,22 +55,25 @@ $cy = $_GET['cy'];
 //gets the bus variable, I use this later to determine if you want to show bus routes or GreenLine.
 $bus = $_GET['bus'];
 
+
+
 //sets some variabls depending on bus or greenline
 //this is creating the url eg. http://svc.metrotransit.org/nextrip/87/1/RAST?format=json
-
 if ($bus == "True"){
 $direction1 = "North";
 $direction2 = "South";
 $routeNum1 = "/87/4/";
 $routeNum2 = "/87/1/";
 $busGET = "&bus=True";
+$modeIcon = "ion-android-bus";
 }else{
+$modeIcon = "ion-android-subway";
 $direction1 = "East";
 $direction2 = "West";
 $routeNum1 = "/902/2/";
 $routeNum2 = "/902/3/";
 };
-//test
+
 
 
 //checks if there are coordinates set
@@ -167,8 +175,11 @@ function getrequest($url){
 	<div class=container-fluid>
 		<div id=main class="panel panel-default">
 			<div class="panel-heading"><h2 class="direction">
+				
 				<?PHP echo $stationName; ?>
+				
 				</h2>
+				<span id="modeIcon" class=" <?PHP echo $modeIcon; ?> "></span>
 			</div>
 			<div class='panel-body direction'><h3  class="direction"> <?PHP echo $direction1; ?> </h3>
 				<?PHP
