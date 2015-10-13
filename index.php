@@ -38,6 +38,7 @@ $reload = '"True"';
 //sets some variabls depending on bus or greenline
 //this is creating the url eg. http://svc.metrotransit.org/nextrip/87/1/RAST?format=json
 if ($bus == "True"){
+$busText = '"True"';
 $direction1 = "North";
 $direction2 = "South";
 $routeNum1 = "/87/4/";
@@ -45,6 +46,7 @@ $routeNum2 = "/87/1/";
 $busGET = '+"&bus=True"';
 $modeIcon = "ion-android-bus";
 }else{
+$busText = '"false"';
 $modeIcon = "ion-android-subway";
 $direction1 = "East";
 $direction2 = "West";
@@ -175,22 +177,30 @@ function getrequest($url){
 	
 	<script>
 	
-		
-	//javascript that checks the location and refreshes the window every 30 seconds	
-	
+		//javascript that checks the location and refreshes the window every 30 seconds	if the url does not have ?reload=False
 	function getLocation() {
       if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(showPosition);
-		  
+          navigator.geolocation.getCurrentPosition(showPosition); 
       } else {
           x.innerHTML = "Geolocation is not supported by this browser.";
       }
     }
-    function showPosition(position) {
+		
+    function showPosition(position) {	
       window.location.href = "http://narwhy.pw/metro/index.php?cx="+position.coords.latitude+"&cy="+ position.coords.longitude<?PHP echo $busGET.$reloadGET; ?>;
     }
+		
 	if (<?php echo $reload; ?> != "False"){ setTimeout("getLocation();", 30000)};
-	function changeMode();	
+	
+		
+	function changeMode(){	
+		if (<?PHP echo $busText; ?> == "True"){
+			window.location.href = "http://narwhy.pw/metro/index.php?bus=False<?PHP echo $reloadGET; ?>";
+		}else{
+			window.location.href = "http://narwhy.pw/metro/index.php?bus=True<?PHP echo $reloadGET; ?>";
+		}			
+	}
+		
 		
 	
 	</script>
