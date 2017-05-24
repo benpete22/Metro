@@ -1,8 +1,8 @@
 <!-- Latest compiled and minified CSS -->
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" media="screen" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
+  <link rel="stylesheet" type="text/css" media="screen" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
 
 <!-- Optional theme -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
@@ -63,18 +63,19 @@ if(isset($_GET['cx']) == false){
     function getLocation() {
       if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(showPosition);
-		  
+					
       } else {
           x.innerHTML = "Geolocation is not supported by this browser.";
       }
     }
     function showPosition(position) {
-      window.location.href = "http://narwhy.pw/metro/index.php?cx="+position.coords.latitude+"&cy="+ position.coords.longitude'.$busGET.$reloadGET.';
+      window.location.href = "https://narwhy.pw/metro/index.php?cx="+position.coords.latitude+"&cy="+ position.coords.longitude'.$busGET.$reloadGET.';
     }
 	getLocation();
 	</script>
 	
-	waiting for geolocation
+	waiting for geolocation...
+	
 	
 	';
 	
@@ -160,6 +161,14 @@ function getrequest($url){
 	// Close request to clear up some resources
 	curl_close($curl);
 	//returns the json encoded response
+	
+	
+	$httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+	if($httpCode == 404) {
+    $resp[0]= "MetroTransit API gave 404" ;
+	};
+	
+	
 	return json_decode($resp);
 };
 ?>	
@@ -178,7 +187,7 @@ function getrequest($url){
     }
 		
     function showPosition(position) {	
-      window.location.href = "http://narwhy.pw/metro/index.php?cx="+position.coords.latitude+"&cy="+ position.coords.longitude<?PHP echo $busGET.$reloadGET; ?>;
+      window.location.href = "https://narwhy.pw/metro/index.php?cx="+position.coords.latitude+"&cy="+ position.coords.longitude<?PHP echo $busGET.$reloadGET; ?>;
     }
 		
 	// checks to make sure that $reload is not set to false and then after waiting 30 seconds calls the getLocation() fucntion
@@ -187,9 +196,9 @@ function getrequest($url){
 	//script that will toggle between bus and train mode. 
 	function changeMode(){	
 		if (<?PHP echo $busText; ?> == "True"){
-			window.location.href = "http://narwhy.pw/metro/index.php?bus=False<?PHP echo $reloadGET; ?>";
+			window.location.href = "https://narwhy.pw/metro/index.php?bus=False<?PHP echo $reloadGET; ?>";
 		}else{
-			window.location.href = "http://narwhy.pw/metro/index.php?bus=True<?PHP echo $reloadGET; ?>";
+			window.location.href = "https://narwhy.pw/metro/index.php?bus=True<?PHP echo $reloadGET; ?>";
 		}			
 	}	
 	</script>
@@ -207,14 +216,14 @@ function getrequest($url){
 			<div class='panel-body direction'><h3  class="direction"> <?PHP echo $direction1; ?> </h3>
 				<?PHP
 				//Sets the URL
-				$requrl ='http://svc.metrotransit.org/nextrip'.$routeNum1.$stationID.'?format=json';
+				$requrl ='https://svc.metrotransit.org/nextrip'.$routeNum1.$stationID.'?format=json';
 				//requests the URL
 				$output = getrequest($requrl); ?>
 				<h4 class="direction">
-					<div class='time panel-footer' onclick='location.href="https://www.google.com/maps?q=<?PHP echo $output[0]->VehicleLatitude; ?>,<?PHP echo $output[0]->VehicleLongitude; ?> "'>
+					<div class='time panel-footer' onclick='location.href="https://www.google.com/maps/place/<?PHP echo $output[0]->VehicleLatitude; ?>,<?PHP echo $output[0]->VehicleLongitude; ?>/@<?PHP echo $output[0]->VehicleLatitude; ?>,<?PHP echo $output[0]->VehicleLongitude; ?>,16z"'>
 						<?PHP echo $output[0]->DepartureText ?>
 					</div>
-					<div class='time panel-footer bottomfoot' onclick='location.href="https://www.google.com/maps?q=<?PHP echo $output[1]->VehicleLatitude; ?>,<?PHP echo $output[1]->VehicleLongitude; ?> "'>
+					<div class='time panel-footer bottomfoot' onclick='location.href="https://www.google.com/maps/place/<?PHP echo $output[1]->VehicleLatitude; ?>,<?PHP echo $output[1]->VehicleLongitude; ?>/@<?PHP echo $output[1]->VehicleLatitude; ?>,<?PHP echo $output[1]->VehicleLongitude; ?>,16z "'>
 						<?PHP echo $output[1]->DepartureText ?>
 					</div>
 				</h4>
@@ -222,14 +231,14 @@ function getrequest($url){
 			<div class='panel-body direction'><h3  class="direction"> <?PHP echo $direction2; ?></h3>
 				<?PHP
 				//Sets the URL
-				$requrl ='http://svc.metrotransit.org/nextrip'.$routeNum2.$stationID.'?format=json';
+				$requrl ='https://svc.metrotransit.org/nextrip'.$routeNum2.$stationID.'?format=json';
 				//requests the URL
 				$output = getrequest($requrl); ?>
 				<h4 class="direction">
-					<div class='time panel-footer' onclick='location.href="https://www.google.com/maps?q=<?PHP echo $output[0]->VehicleLatitude; ?>,<?PHP echo $output[0]->VehicleLongitude; ?> "'>
+					<div class='time panel-footer' onclick='location.href="https://www.google.com/maps/place/<?PHP echo $output[0]->VehicleLatitude; ?>,<?PHP echo $output[0]->VehicleLongitude; ?>/@<?PHP echo $output[0]->VehicleLatitude; ?>,<?PHP echo $output[0]->VehicleLongitude; ?>,16z "'>
 						<?PHP echo $output[0]->DepartureText ?>
 					</div>
-					<div class='time panel-footer bottomfoot' onclick='location.href="https://www.google.com/maps?q=<?PHP echo $output[1]->VehicleLatitude; ?>,<?PHP echo $output[1]->VehicleLongitude; ?> "'>
+					<div class='time panel-footer bottomfoot' onclick='location.href="https://www.google.com/maps/place/<?PHP echo $output[1]->VehicleLatitude; ?>,<?PHP echo $output[1]->VehicleLongitude; ?>/@<?PHP echo $output[1]->VehicleLatitude; ?>,<?PHP echo $output[1]->VehicleLongitude; ?>,16z "'>
 						<?PHP echo $output[1]->DepartureText ?>
 					</div>
 				</h4>
